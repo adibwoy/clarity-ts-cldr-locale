@@ -53,8 +53,8 @@ export class TSLocaleCreator {
     }
 
     getFormattedData(locale: string, territory: string): string {
-        const months: any = JSON.stringify(this.cldrFetcher.fetchMonths(locale), null, 8);
-        const days: any = JSON.stringify(this.cldrFetcher.fetchDays(locale), null, 8);
+        const months: any = JSON.stringify(this.transformData(this.cldrFetcher.fetchMonths(locale)), null, 8);
+        const days: any = JSON.stringify(this.transformData(this.cldrFetcher.fetchDays(locale)), null, 8);
         const weekData: any = this.cldrFetcher.firstDayOfTheWeek;
         let formattedData = JSON_FORMAT.replace("${OBJECT_NAME}", this.convertLocaleToObjectName(locale));
         formattedData = formattedData.replace("${LOCALE}", locale);
@@ -62,6 +62,17 @@ export class TSLocaleCreator {
         formattedData = formattedData.replace("${DAYS}", days);
         formattedData = formattedData.replace("${FIRSTDAY}", weekData[territory]);
         return formattedData;
+    }
+
+    transformData(data: any): any {
+        Object.keys(data).forEach(key => {
+            data[key] = this.mapToArray(data[key]);
+        });
+        return data;
+    }
+
+    mapToArray(arr: any) {
+        return Object.keys(arr).map(key => arr[key]);
     }
 
     convertLocaleToObjectName(locale: string): string {
