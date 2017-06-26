@@ -1,25 +1,27 @@
 {
-  "name": "cldr",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist/index",
-  "scripts": {
-    "start": "npm run watch",
-    "watch": "nodemon -e ts -w ./src -x npm run watch:serve",
-    "watch:serve": "ts-node --inspect src/main.ts"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@types/node": "^8.0.1",
-    "json-typescript-mapper": "^1.1.3"
-  },
-  "devDependencies": {
-    "cldr-core": "^31.0.1",
-    "cldr-dates-modern": "^31.0.1",
-    "cldr-numbers-modern": "^31.0.1",
-    "nodemon": "^1.11.0",
-    "ts-node": "^3.1.0",
-    "typescript": "^2.3.4"
-  }
+    "name": "cldr",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/index",
+    "scripts": {
+        "start": "npm run watch",
+        "watch": "nodemon -e ts -w ./src -x npm run watch:serve",
+        "watch:serve": "ts-node --inspect src/main.ts"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@types/node": "^8.0.1",
+        "json-typescript-mapper": "^1.1.3"
+    },
+    "devDependencies": {
+        "cldr-core": "^31.0.1",
+        "cldr-dates-modern": "^31.0.1",
+        "cldr-numbers-modern": "^31.0.1",
+        "gulp": "^3.9.1",
+        "nodemon": "^1.11.0",
+        "pretty-typescript": "^1.15.0",
+        "ts-node": "^3.1.0",
+        "typescript": "^2.3.4"
+    }
 }
