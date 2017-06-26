@@ -5,6 +5,8 @@ const OUTPUT_PATH = "dist/output/";
 
 const JSON_FORMAT = "export const ${OBJECT_NAME}: any = {\n    \"locale\": \"${LOCALE}\",\n    \"months\": ${MONTHS},\n    \"days\": ${DAYS},\n    \"firstDay\": \"${FIRSTDAY}\"\n}";
 
+const WORLD_TERRITORY = "001";
+
 export class TSLocaleCreator {
 
     cldrFetcher: CLDRDataFetcher;
@@ -30,12 +32,24 @@ export class TSLocaleCreator {
                 if (this.cldrFetcher.firstDayOfTheWeek[territory]) {
                     this.generateLocaleFile(locale, this.getFormattedData(locale, territory));
                 } else {
-                    console.error("Error 1: Territory (" + territory + ") found but first day not found. Locale: " + locale);
+                    console.warn(`Warning 1: Territory "${territory}" found but first day not found. Searching for a fallback for Locale: "${locale}"`);
+                    this.generateFallbackData(locale, 1);
                 }
             } else {
-                console.error("Error 2: Territory not found for " + locale + ".");
+                console.warn(`Warning 2: Territory "${territory}" not found. Searching for a fallback for Locale: "${locale}"`);
+                this.generateFallbackData(locale, 2);
             }
         });
+    }
+
+    generateFallbackData(locale: string, errorCode: number): void {
+        const fallbackTerritory: string = this.cldrFetcher.fetchMissingTerritory(locale);
+        if (this.cldrFetcher.firstDayOfTheWeek[fallbackTerritory]) {
+            this.generateLocaleFile(locale, this.getFormattedData(locale, fallbackTerritory));
+        } else {
+            console.error(`ERROR${errorCode}: NO MAPPING FOR FALLBACK TERRITORY: "${fallbackTerritory}" Falling back to 001. LOCALE: "${locale}"`);
+            this.generateLocaleFile(locale, this.getFormattedData(locale, WORLD_TERRITORY));
+        }
     }
 
     getFormattedData(locale: string, territory: string): string {
